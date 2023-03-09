@@ -3,7 +3,7 @@
  * @Author: Bob Chang 2233282817@qq.com
  * @Date: 2023-03-08 11:29:23
  * @LastEditors: Bob Chang 2233282817@qq.com
- * @LastEditTime: 2023-03-08 21:47:47
+ * @LastEditTime: 2023-03-09 10:10:37
  * @FilePath: \api\app\Http\Controllers\UserController.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -91,5 +91,23 @@ class UserController extends BaseController
     public function destroy(string $id)
     {
         //
+        // return $id;
+        //判断id合法
+        if (!is_numeric($id)) {
+            return $this->create([],'id参数错误~~',400);
+        }
+
+        //查找数据并删除
+        $users = User::find($id);
+
+        //删除的数据不存在
+        if (empty($users)) {
+            return $this->create([],'要删除的数据不存在~~',400);
+        }
+
+        //执行删除，并返回
+        if ($users->delete()) {
+            return $this->create([],'删除成功~~',200);
+        }
     }
 }
